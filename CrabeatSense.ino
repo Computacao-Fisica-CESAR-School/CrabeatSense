@@ -1,9 +1,15 @@
+#include <Ultrasonic.h>
+
+Ultrasonic volumeSensor(10, 11);
+unsigned int volumeValue;
+
 void setup() {
-  // put your setup code here, to run once:
+  Serial.begin(9600);
 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  volumeValue = volumeSensor.read()
 
+  Serial.println(volumeValue + ";0;0;0");
 }
