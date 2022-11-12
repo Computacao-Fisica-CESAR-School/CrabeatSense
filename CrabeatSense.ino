@@ -18,10 +18,9 @@ unsigned int rateValue;
 unsigned int jumpValue;
 unsigned int nextValue;
 
-unsigned long previousMillis = 0; //Variavel para o blink
-const  long interval == 2000;
+unsigned long tempoAnterior; //Variavel para o blink
 
-int musica = 1;
+int musicaAtual;
 
 void setup() {
   Serial.begin(9600);
@@ -40,9 +39,10 @@ void setup() {
 
 void loop() {
 
-  unsigned long currentMillis = millis();
-
   lcd.display();
+
+  musicaAtual = lerSerial();
+  telas(musicaAtual);
 
   
   volumeValue = volumeSensor.read();
@@ -50,37 +50,45 @@ void loop() {
   jumpValue = jumpSensor.read();
   nextValue = nextSensor.read();
 
-  if (currentMillis - previousMillis >= interval){
-    previousMillis = currentMillis;
+  if (millis() - tempoAnterior >= 2000){
+    tempoAnterior = millis();
 
-    if (nextValue <= 10){
-      if (musica == 1){
-        musica = 2;
-        lcd.clear();
+    Serial.print(volumeValue);
+    Serial.print(";");
+    Serial.print(rateValue);
+    Serial.print(";");
+    Serial.print(jumpValue);
+    Serial.print(";");
+    Serial.println(nextValue);
+
+  }
   
-        lcd.setCursor(0, 1);
-        lcd.print("Artista: CAMALEOA");
-        lcd.setCursor(0, 2);
-        lcd.print("Faixa: 3 POR 10");
-    }else{
-      musica = 1;
+}
+
+
+int lerSerial(){
+  int leitura;
+  if (Serial.available() > 0){
+    leitura = Serial.read();
+  }
+  return leitura;
+}
+
+
+void telas(int musica){
+  switch (musica){
+    case 1:
       lcd.clear();
-    
       lcd.setCursor(0, 1);
       lcd.print("Artista: CAMALEOA");
-      lcd.setCursor(0, 2);
+      lcd.setCursor(0,2);
+      lcd.print("Faixa: 3 POR 10");
+      break;
+    case 2:
+      lcd.clear();
+      lcd.setCursor(0, 1);
+      lcd.print("Artista: CAMALEOA");
+      lcd.setCursor(0,2);
       lcd.print("Faixa: MIRAGEM");
-    }
-    }
   }
-
-  Serial.print(volumeValue);
-  Serial.print(";");
-  Serial.print(rateValue);
-  Serial.print(";");
-  Serial.print(jumpValue);
-  Serial.print(";");
-  Serial.println(nextValue);
-
-  delay(300);
 }
