@@ -35,12 +35,6 @@ void setup() {
   lcd.clear(); //Limpa o display LCD
   lcd.backlight(); //Ativa a luz de fundo do LCD
 
-  lcd.setCursor(0, 1); // Define o "ponteiro" de escrita do LCD para linha - 0 Coluna - 1
-  lcd.print("Artista: CAMALEOA"); // Escreve a frase no LCD no local onde está seu "ponteiro"
-  lcd.setCursor(0, 2);
-  lcd.print("Faixa: 3 POR 10");
-  
-
 }
 
 // Função nativa do arduino que cria um loop infinito
@@ -68,6 +62,8 @@ void loop() {
     Serial.print(";");
     Serial.println(nextValue);
 
+    // Ao final será printado no formato: volumeValue;rateValue;jumpValue;nextValue
+
   }
   
 }
@@ -83,19 +79,34 @@ int lerSerial(){
 
 // Função que vai mostrar no lcd cada musica de acordo com a leitura Serial (Na linha 52)
 void telas(int musica){
-  switch (musica){
+  switch (musica){ // Função que permite a criação de um "menu", onde ira executar o case que tiver o valor igual ao da variavel musica
     case 0:
-      lcd.clear();
-      lcd.setCursor(0, 1);
-      lcd.print("Artista: CAMALEOA");
-      lcd.setCursor(0,2);
-      lcd.print("Faixa: 3 POR 10");
-      break;
+      lcd.clear(); // Limpa o LCD
+      lcd.setCursor(0, 0); // Define o "ponteiro" de escrita do LCD para Coluna - 0 Linha - 0
+      lcd.print("Artista: CAMALEOA"); // Escreve a frase no LCD no local onde está seu "ponteiro"
+      lcd.setCursor(0, 1); // Define o "ponteiro" de escrita do LCD para Coluna - 0 Linha - 1
+      lcd.print("Faixa: 3 POR 10"); // Escreve a frase no LCD no local onde está seu "ponteiro"
+      break; // Interrompe o switch
     case 1:
       lcd.clear();
-      lcd.setCursor(0, 1);
+      lcd.setCursor(0, 0);
       lcd.print("Artista: CAMALEOA");
-      lcd.setCursor(0,2);
+      lcd.setCursor(0, 1);
       lcd.print("Faixa: MIRAGEM");
+      break;
+    case 2:
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Artista: Hóspedes da Rua Rosa");
+      lcd.setCursor(0, 1);
+      lcd.print("Faixa: Eu tô muito é pior.wav");
+      break;
+    case 3:
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Artista: Mangroov");
+      lcd.setCursor(0, 1);
+      lcd.print("Faixa: Mangroov");
+      break;
   }
 }
