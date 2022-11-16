@@ -25,7 +25,8 @@ unsigned int nextValue;
 
 unsigned long tempoAnterior; //Variavel para o blink
 
-int musicaAtual;
+int musicaAtual = 0;
+int musicaAnterior = 0;
 
 // Função nativa do arduino que serve para definir como o arduino irá iniciar (As alterações são feitas pelo loop())
 void setup() {
@@ -35,15 +36,20 @@ void setup() {
   lcd.clear(); //Limpa o display LCD
   lcd.backlight(); //Ativa a luz de fundo do LCD
 
+  telas(musicaAtual);
+
 }
 
 // Função nativa do arduino que cria um loop infinito
 void loop() {
 
-  lcd.display(); //Sempre que iniciar o loop vai ligar o Display
 
-  musicaAtual = lerSerial(); //Função que lê as informações passadas do processing para o arduino via Serial 
-  telas(musicaAtual); //Vai mostrar qual a musica está tocando no momento de acordo com a informação Serial
+  musicaAtual = lerSerial(); //Função que lê as informações passadas do processing para o arduino via Serial
+  if (musicaAnterior != musicaAtual){
+    telas(musicaAtual); //Vai mostrar qual a musica está tocando no momento de acordo com a informação Serial
+    musicaAnterior = musicaAtual;
+  }
+  
 
   // Atribui os valores lidos (.read) dos sensores para as variaveis...
   volumeValue = volumeSensor.read();
@@ -51,20 +57,16 @@ void loop() {
   jumpValue = jumpSensor.read();
   nextValue = nextSensor.read();
 
-  if (millis() - tempoAnterior >= 2000){ // Um temporizador, ou seja, essa condição só será verdadeira a cada 2000 milisegundos (2 segundos)
-    tempoAnterior = millis();
-    // ...Essas variaveis serão printadas no monitos Serial e serão lidas pelo processing
-    Serial.print(volumeValue);
-    Serial.print(";");
-    Serial.print(rateValue);
-    Serial.print(";");
-    Serial.print(jumpValue);
-    Serial.print(";");
-    Serial.println(nextValue);
+  //Essas variaveis serão printadas no monitor Serial e serão lidas pelo processing
+  Serial.print(volumeValue);
+  Serial.print(";");
+  Serial.print(rateValue);
+  Serial.print(";");
+  Serial.print(jumpValue);
+  Serial.print(";");
+  Serial.println(nextValue);
 
-    // Ao final será printado no formato: volumeValue;rateValue;jumpValue;nextValue
-
-  }
+  // Ao final será printado no formato: volumeValue;rateValue;jumpValue;nextValue
   
 }
 
@@ -97,9 +99,13 @@ void telas(int musica){
     case 2:
       lcd.clear();
       lcd.setCursor(0, 0);
-      lcd.print("Artista: Hóspedes da Rua Rosa");
+      lcd.print("Artista: Hospedes da");
       lcd.setCursor(0, 1);
-      lcd.print("Faixa: Eu tô muito é pior.wav");
+      lcd.print("rua Rosa");
+      lcd.setCursor(0, 2);
+      lcd.print("Faixa: Eu to muito e");
+      lcd.setCursor(0, 3);
+      lcd.print("pior");
       break;
     case 3:
       lcd.clear();
