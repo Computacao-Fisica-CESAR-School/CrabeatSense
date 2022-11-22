@@ -65,9 +65,7 @@ void loop() {
   Serial.print(jumpValue);
   Serial.print(";");
   Serial.println(nextValue);
-
   // Ao final será printado no formato: volumeValue;rateValue;jumpValue;nextValue
-  
 }
 
 // Função que lê a informação serial enviada pelo processing
